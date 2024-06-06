@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit a Case</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            let isValid = true;
+            const name = document.getElementById('name');
+            const state = document.getElementById('state');
+            const email = document.getElementById('email');
+            const phone = document.getElementById('phone');
+            const subject = document.getElementById('subject');
+            const description = document.getElementById('description');
+
+            clearErrors();
+
+            if (name.value.trim() === '') {
+                showError(name, 'Name is required');
+                isValid = false;
+            }
+            if (state.value.trim() === '') {
+                showError(state, 'State is required');
+                isValid = false;
+            }
+            if (email.value.trim() === '' || !validateEmail(email.value)) {
+                showError(email, 'Valid email is required');
+                isValid = false;
+            }
+            if (phone.value.trim() === '') {
+                showError(phone, 'Phone is required');
+                isValid = false;
+            }
+            if (subject.value.trim() === '') {
+                showError(subject, 'Subject is required');
+                isValid = false;
+            }
+            if (description.value.trim() === '') {
+                showError(description, 'Description is required');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function clearErrors() {
+            const errors = document.querySelectorAll('.error');
+            errors.forEach(error => error.remove());
+        }
+
+        function showError(input, message) {
+            const error = document.createElement('div');
+            error.className = 'error';
+            error.innerText = message;
+            input.parentNode.insertBefore(error, input.nextSibling);
+        }
+
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Submit a Case</h1>
+        <form action="https://webto.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8&orgId=00DWU0000056pRg" method="post" onsubmit="return validateForm()">
+            <!-- Salesforce-required hidden fields -->
+            <input type="hidden" name="orgid" value="00DWU0000056pRg">
+            <input type="hidden" name="retURL" value="https://https://thankyouforcase.tilda.ws/">
+
+            <!-- Custom fields -->
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="state">State:</label>
+            <input type="text" id="state" name="state" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone" required>
+            
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" name="subject" required>
+            
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" cols="50" required></textarea>
+            
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
